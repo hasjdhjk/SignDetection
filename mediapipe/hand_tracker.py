@@ -11,8 +11,8 @@ class HandTracker:
 #---------------------------------------------#
     def __init__(self, max_num_hands = 2, 
                  model_complexity = 1, 
-                 min_detection_confidence = 0.5, 
-                 min_tracking_confidence = 0.5): 
+                 min_detection_confidence = 0.6, 
+                 min_tracking_confidence = 0.6): 
         
         self.mp_hands = mp.solutions.hands
         self.mp_drawing = mp.solutions.drawing_utils
@@ -124,12 +124,15 @@ class HandTracker:
 # and num_features is the number of features per frame. 
 #
     def create_landmark_array(self, results): 
-        array = list()
+        feature_array = list()
         # Check if landmarks are detected
         if results.multi_hand_landmarks: 
             for hand_landmarks, hand_handedness in zip(results.multi_hand_landmarks, results.multi_handedness): 
+                print(f'Handedness: {hand_handedness}')
                 # Append handedness to array
                 handedness_label = hand_handedness.classification[0].label
                 confidence = hand_handedness.classification[0].score
-                landmarks = hand_landmarks.landmark
-                print(landmarks)
+                for i in range(0, 21): 
+                    landmark = hand_landmarks.landmark[i]
+                    feature_array.extend([landmark.x, landmark.y, landmark.z])
+            print('')

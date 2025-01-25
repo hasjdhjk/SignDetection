@@ -1,6 +1,6 @@
 import cv2
-from mediapipe.hand_tracker import HandTracker
-import numpy as np
+import mediapipe
+from hand_tracker import HandTracker
 
 #---------------------------------------------#
 # INITIALISE CAMERA                           #

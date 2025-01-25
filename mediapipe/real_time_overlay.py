@@ -1,12 +1,13 @@
 import cv2
-from mediapipe.hand_tracker import HandTracker
+import mediapipe
+from hand_tracker import HandTracker
 
 #---------------------------------------------#
 # INITIALISE CAMERA                           #
 # first function called                       #
 #---------------------------------------------#
 def initialize_camera():
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)                 # For Macs
     if not cap.isOpened():
         print("Error: Could not open the camera.")
         exit()
@@ -34,8 +35,11 @@ def main():
         # Process the frame and get hand landmarks
         processed_frame, results = hand_tracker.process_frame(frame)
 
-        # Print hand landmarks
-        hand_tracker.print_hand_landmarks(results)
+        # Print hand landmarks CONTROL
+        # hand_tracker.print_hand_landmarks(results)
+
+        # Print hand landmarks TEST
+        hand_tracker.create_landmark_array(results)
 
         # Draw hand landmarks on the frame
         hand_tracker.draw_landmarks(processed_frame, results)
