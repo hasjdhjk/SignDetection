@@ -131,3 +131,5 @@ class HandTracker:
                 # Append handedness to array
                 handedness_label = hand_handedness.classification[0].label
                 confidence = hand_handedness.classification[0].score
+                landmarks = hand_landmarks.landmark
+                print(landmarks)
