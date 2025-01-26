@@ -34,6 +34,9 @@ class HandTracker:
         # Flip the frame horizontally. This is for webcam. 
         frame = cv2.flip(frame, 1)
 
+        # Mediapipe often assumed a square aspect ratio in calculations.
+        # frame = cv2.resize(frame, (640, 640))
+
         # Convert the frame to RGB for Mediapipe processing
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         rgb_frame.flags.writeable = False
@@ -124,15 +127,33 @@ class HandTracker:
 # and num_features is the number of features per frame. 
 #
     def create_landmark_array(self, results): 
-        feature_array = list()
+        feature_array = [None, None]
+
         # Check if landmarks are detected
         if results.multi_hand_landmarks: 
             for hand_landmarks, hand_handedness in zip(results.multi_hand_landmarks, results.multi_handedness): 
-                print(f'Handedness: {hand_handedness}')
-                # Append handedness to array
                 handedness_label = hand_handedness.classification[0].label
                 confidence = hand_handedness.classification[0].score
+
+                # Extract landmarks from each hand and append confidence
+                hand_data = list()
                 for i in range(0, 21): 
                     landmark = hand_landmarks.landmark[i]
-                    feature_array.extend([landmark.x, landmark.y, landmark.z])
-            print('')
+                    hand_data.extend([landmark.x, landmark.y, landmark.z])
+                hand_data.append(confidence)
+
+                # The index for feature_array is [Right, Left]
+                if handedness_label == 'Right': 
+                    feature_array[0] = hand_data
+                elif handedness_label == 'Left': 
+                    feature_array[1] = hand_data
+                
+        for i in range(len(feature_array)): 
+            if feature_array[i] == None: 
+                feature_array[i] = [0] * 64
+                # 64 = 21 * 3 + 1, 21 landmarks * 3 (x, y, z) + confidence
+        
+        # Flatten the array to combine both hands into a single array
+        final_array = feature_array[0] + feature_array[1]
+        print(f"Final array: {final_array[:10]}... (truncated)")
+        return final_array
