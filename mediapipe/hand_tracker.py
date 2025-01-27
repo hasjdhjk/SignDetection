@@ -155,5 +155,5 @@ class HandTracker:
         
         # Flatten the array to combine both hands into a single array
         final_array = feature_array[0] + feature_array[1]
-        print(f"Final array: {final_array[:10]}... (truncated)")
+        print(f"Final array: {final_array}")
         return final_array
