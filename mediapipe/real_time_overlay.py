@@ -39,7 +39,8 @@ def main():
         # hand_tracker.print_hand_landmarks(results)
 
         # Print hand landmarks TEST
-        hand_tracker.create_landmark_array(results)
+        final_array = hand_tracker.create_landmark_array(results)
+        print(f"Final array: {final_array}")
 
         # Draw hand landmarks on the frame
         hand_tracker.draw_landmarks(processed_frame, results)
