@@ -1,9 +1,7 @@
 # real_time_overlay
 import cv2
-import time
 import os
 import numpy as np
-import mediapipe
 from hand_tracker import HandTracker
 
 
@@ -22,7 +20,7 @@ os.makedirs(landmark_dir, exist_ok=True)
 # first function called                       #
 #---------------------------------------------#
 def initialize_camera():
-    cap = cv2.VideoCapture(1)                 # 1 for when iPhone is close, 0 normally
+    cap = cv2.VideoCapture(0)                 # 1 for when iPhone is close, 0 normally
     if not cap.isOpened():
         print("Error: Could not open the camera.")
         exit()
@@ -49,8 +47,8 @@ def main():
     # Constants
     width = int(cap.get(3))                    # In pixels
     height = int(cap.get(4))
-    fps = int(cap.get(5))
-    video_duration = 2                         # In seconds
+    fps = 30
+    video_duration = 1.5                         # In seconds
     frame_number = fps * video_duration
 
     recording = False
@@ -82,8 +80,7 @@ def main():
         hand_tracker.draw_handedness(processed_frame, results)
 
         # Print hand landmarks TEST
-        final_array = hand_tracker.create_landmark_array(results)
-        print(f"Final array: {final_array}")
+        frame_array = hand_tracker.create_landmark_array(results)
 
         # Display the annotated frame
         cv2.imshow("Hand Tracking", processed_frame)
@@ -93,9 +90,8 @@ def main():
         # Start recording when spacebar is pressed
         # 
         if key == ord('r') and not recording:
-            timestamp = time.strftime("%Y%m%d_%H%M%S")
-            video_filename = os.path.join(video_dir, f"video_{timestamp}.mp4")
-            landmark_filename = os.path.join(landmark_dir, f"landmarks_{timestamp}.npy")
+            video_filename = os.path.join(video_dir, f"video_label_1.mp4")
+            landmark_filename = os.path.join(landmark_dir, f"landmark_label_1.npy")
             video_writer = cv2.VideoWriter(video_filename, fourcc, fps, (width, height))
             recording = True
             frame_counter = 0
@@ -104,7 +100,7 @@ def main():
         
         if recording:
             video_writer.write(frame)
-            landmark_list.append(final_array)
+            landmark_list.append(frame_array)
             frame_counter += 1
             
             if frame_counter >= frame_number:
@@ -113,6 +109,7 @@ def main():
                 save_landmarks(landmark_list, landmark_filename)
                 print(f"Recording saved: {video_filename}")
                 print(f"Landmarks saved: {landmark_filename}")
+                print(f"Saved array: \n {landmark_list[0:4]}")
 
         # Exit on 'q' key press
         if key == ord('q'):
