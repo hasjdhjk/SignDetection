@@ -21,8 +21,6 @@ def initialize_video(file_name):
 def main():
     video = initialize_video('name_of_file')
     hand_tracker = HandTracker()
-    # VIDEO = a function that loads video. 
-    # In real_time_overlay, the class type of 'cap' is <class 'cv2.VideoCapture'>. 
 
     # Error handling for video processing
     while True:
