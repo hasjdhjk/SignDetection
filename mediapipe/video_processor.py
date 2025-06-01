@@ -1,3 +1,5 @@
+# passes a video for processing
+
 import cv2
 import mediapipe
 from hand_tracker import HandTracker

@@ -1,4 +1,4 @@
-# detection
+# detection. shows first stage of detection. 
 import cv2
 import os
 import numpy as np
@@ -26,8 +26,6 @@ def main():
     cap = initialize_camera()
     hand_tracker = HandTracker()
 
-    window = []
-    window_size = 60
 
     while True:
         success, frame = cap.read()
