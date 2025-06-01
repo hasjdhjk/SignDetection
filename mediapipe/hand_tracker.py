@@ -25,7 +25,7 @@ class HandTracker:
         )
         self.skipped_frames = 0
         self.last_sample_time = time.time()
-        self.sample_interval = 1 / 20  # target ~230 FPS
+        self.sample_interval = 1 / 30
 
 
 #---------------------------------------------#
