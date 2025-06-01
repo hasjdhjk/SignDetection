@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from preprocess_pytorch import LandmarkDataset
+from preprocessing import LandmarkDataset
 
 # Load dataset
 dataset = LandmarkDataset("landmark_data/")
