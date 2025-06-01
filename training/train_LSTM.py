@@ -1,3 +1,10 @@
+#
+#
+# LSTM model is defined here. Can be tweaked and altered. 
+#
+#
+
+
 import torch
 import torch.nn as nn
 import torch.optim as optim

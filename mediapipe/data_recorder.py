@@ -1,4 +1,10 @@
-# real_time_overlay
+# 
+#
+# This file is used for data recording. For each recording, a .npy and a .mp4 file is created. 
+#
+#
+
+
 import cv2
 import os
 import numpy as np
@@ -44,8 +50,14 @@ def main():
 
     width = int(cap.get(3))
     height = int(cap.get(4))
+
+    # 
+    # Change fps and video duration (s) here. 
+    #
     fps = 30
     video_duration = 1.5
+
+
     frame_number = int(fps * video_duration)
 
     recording = False
