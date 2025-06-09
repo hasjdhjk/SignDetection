@@ -23,9 +23,13 @@ To reproduce:
     video_title = "video_(label name)_(recording number).mp4"
     landmark_title = "landmark_(label name)_(recording number).npy"
 
-5. Once all videos are recorded, go to the 'training' folder and run 'train_LSTM.py'. This will take care of the data and train the LSTM. 
+5. Once all videos are recorded, go to the 'training' folder and run 'train_LSTM.py'. This will take care of the data and train the LSTM. A 'label_map.json' should be written. 
 
-6. Have big funs! 
+6. After exporting the model from Google Collab, import the model back. 
+
+7. Go to 'detection.py' in the main directory. Update the variable 'MODEL_PATH' to where your model is. 
+
+8. Running 'detection.py' gives you real-time detection. 
 
 
 
