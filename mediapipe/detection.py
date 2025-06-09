@@ -1,4 +1,10 @@
-# detection. shows first stage of detection. 
+# 
+#
+# A non-recording version. Good to play around with. 
+#
+#
+
+
 import cv2
 import os
 import numpy as np
@@ -10,7 +16,7 @@ from hand_tracker import HandTracker
 # first function called                       #
 #---------------------------------------------#
 def initialize_camera():
-    cap = cv2.VideoCapture(1)                 # 1 for when iPhone is close, 0 normally
+    cap = cv2.VideoCapture(0)                 # 1 for when iPhone is close, 0 normally
     if not cap.isOpened():
         print("Error: Could not open the camera.")
         exit()

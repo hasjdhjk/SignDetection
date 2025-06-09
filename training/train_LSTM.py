@@ -1,21 +1,33 @@
-#
-#
-# LSTM model is defined here. Can be tweaked and altered. 
-#
-#
-
-
+import os
+import json
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from preprocessing import LandmarkDataset
 
-# Load dataset
+#---------------------------------------------#
+# Load label_map from preprocessing           #
+#                                             #
+#---------------------------------------------#
+with open("label_map.json", "r") as f:
+    label_map = json.load(f)
+
+# Convert string keys to int if necessary (defensive)
+label_map = {str(k): int(v) for k, v in label_map.items()}
+num_classes = len(label_map)
+
+#---------------------------------------------#
+# Load dataset                                #
+#                                             #
+#---------------------------------------------#
 dataset = LandmarkDataset("landmark_data/")
 train_loader = DataLoader(dataset, batch_size=16, shuffle=True)
 
-# Define LSTM model
+#---------------------------------------------#
+# Define LSTM model                           #
+#                                             #
+#---------------------------------------------#
 class SignLSTM(nn.Module):
     def __init__(self, input_size=129, hidden_size=64, num_layers=2, num_classes=3):
         super(SignLSTM, self).__init__()
@@ -27,13 +39,19 @@ class SignLSTM(nn.Module):
         out = self.fc(hn[-1])
         return out
 
-# Initialize
+#---------------------------------------------#
+# Initialize                                  #
+#                                             #
+#---------------------------------------------#
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = SignLSTM(num_classes=len(dataset.label_map)).to(device)
+model = SignLSTM(input_size=129, hidden_size=64, num_layers=2, num_classes=num_classes).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# Training loop
+#---------------------------------------------#
+# Training loop                               #
+#                                             #
+#---------------------------------------------#
 epochs = 20
 for epoch in range(epochs):
     model.train()
@@ -58,3 +76,10 @@ for epoch in range(epochs):
 
     acc = 100 * correct / total
     print(f"Epoch [{epoch+1}/{epochs}], Loss: {total_loss:.4f}, Accuracy: {acc:.2f}%")
+
+#---------------------------------------------#
+# Optional: Save model and label map          # 
+#                                             #
+#---------------------------------------------#
+torch.save(model.state_dict(), "sign_lstm.pth")
+print("✅ Model saved to sign_lstm.pth")

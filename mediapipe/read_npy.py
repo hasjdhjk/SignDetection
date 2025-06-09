@@ -6,7 +6,7 @@
 
 
 import numpy as np
-data = np.load('landmark_data/(label name)/landmark_(label name)_1.npy')
+data = np.load('landmark_data/A/landmark_A_1.npy')
 
 print(data[0:5])
 print(len(data))                               # Should be fps * video duration. 

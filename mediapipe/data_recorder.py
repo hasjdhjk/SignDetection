@@ -27,7 +27,7 @@ os.makedirs(landmark_dir, exist_ok=True)
 # INITIALISE CAMERA                           #
 #---------------------------------------------#
 def initialize_camera():
-    cap = cv2.VideoCapture(1)  # 1 for iPhone, 0 for default webcam
+    cap = cv2.VideoCapture(0)  # 1 for iPhone, 0 for default webcam
     if not cap.isOpened():
         print("Error: Could not open the camera.")
         exit()
