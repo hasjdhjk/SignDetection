@@ -7,21 +7,12 @@ from torch.utils.data import DataLoader
 from preprocessing import LandmarkDataset
 
 #---------------------------------------------#
-# Load label_map from preprocessing           #
-#                                             #
-#---------------------------------------------#
-with open("label_map.json", "r") as f:
-    label_map = json.load(f)
-
-# Convert string keys to int if necessary (defensive)
-label_map = {str(k): int(v) for k, v in label_map.items()}
-num_classes = len(label_map)
-
-#---------------------------------------------#
-# Load dataset                                #
-#                                             #
+# Load dataset and extract label map          #
 #---------------------------------------------#
 dataset = LandmarkDataset("landmark_data/")
+label_map = dataset.label_map  # Access from dataset
+num_classes = len(label_map)
+
 train_loader = DataLoader(dataset, batch_size=16, shuffle=True)
 
 #---------------------------------------------#
@@ -29,7 +20,7 @@ train_loader = DataLoader(dataset, batch_size=16, shuffle=True)
 #                                             #
 #---------------------------------------------#
 class SignLSTM(nn.Module):
-    def __init__(self, input_size=129, hidden_size=64, num_layers=2, num_classes=3):
+    def __init__(self, input_size=135, hidden_size=64, num_layers=2, num_classes=3):
         super(SignLSTM, self).__init__()
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
         self.fc = nn.Linear(hidden_size, num_classes)
@@ -44,7 +35,7 @@ class SignLSTM(nn.Module):
 #                                             #
 #---------------------------------------------#
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = SignLSTM(input_size=129, hidden_size=64, num_layers=2, num_classes=num_classes).to(device)
+model = SignLSTM(input_size=135, hidden_size=64, num_layers=2, num_classes=num_classes).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 

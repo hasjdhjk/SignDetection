@@ -36,8 +36,9 @@ class LandmarkDataset(Dataset):
 
                     # Optional: normalize timestamps to [0, 1]
                     timestamps = sequence[:, -1]
-                    timestamps = (timestamps - timestamps.min()) / (timestamps.ptp() + 1e-6)
+                    timestamps = (timestamps - timestamps.min()) / (np.ptp(timestamps) + 1e-6)
                     sequence[:, -1] = timestamps
+
 
                     # Pad or trim to fixed length
                     if len(sequence) < self.sequence_length:
